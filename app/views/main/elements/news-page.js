@@ -30,10 +30,10 @@ export default class NewsPage extends React.Component {
 
   componentDidMount() {
     const that = this;
-    rss(`https://feeds.finance.yahoo.com/rss/2.0/headline?s=${this.props.stock.symbol}&region=US&lang=en-US`).then((json) => {
+    rss(`http://localhost:3000/ticker/`).then((json) => {
       console.log(json);
       that.setState({
-        dataSource: that.state.dataSource.cloneWithRows(json.query.results.item),
+        dataSource: that.state.dataSource.cloneWithRows(json),
         key: Math.random(),
       });
     });

@@ -94,13 +94,13 @@ export default class Settings extends React.Component {
     finance.symbolSuggest(text.text)
       .then(response => response.text())
       .then((result) => {
-        result = result.replace(/(YAHOO\.util\.ScriptNodeDataSource\.callbacks\()(.*)(\);)/g, '$2');
+        // result = result.replace(/(YAHOO\.util\.ScriptNodeDataSource\.callbacks\()(.*)(\);)/g, '$2');
         console.log(result);
         return JSON.parse(result);
       })
       .then((json) => {
         that.setState({
-          dataSource: that.state.dataSource.cloneWithRows(json.ResultSet.Result),
+          dataSource: that.state.dataSource.cloneWithRows(json),
           loaded: true,
           helpText: 'Type a company name or stock symbol.',
         });

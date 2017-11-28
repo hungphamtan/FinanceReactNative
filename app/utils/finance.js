@@ -29,98 +29,32 @@ exports.getStock = function getStock(opts, type) {
     .replace('{startDate}', opts.startDate)
     .replace('{endDate}', opts.endDate);
 
-  const url = defs.baseURL + query + (defs.suffixURL[type] || '');
+  const url = 'http://localhost:3000/ticker/';
   console.log(url);
   return fetch(url);  // eslint-disable-line no-undef
 };
 
 exports.properties = [
-  'AfterHoursChangeRealtime',
-  'AnnualizedGain',
-  'Ask',
-  'AskRealtime',
-  'AverageDailyVolume',
-  'Bid',
-  'BidRealtime',
-  'BookValue',
-  'Change',
-  'ChangeFromFiftydayMovingAverage',
-  'ChangeFromTwoHundreddayMovingAverage',
-  'ChangeFromYearHigh',
-  'ChangeFromYearLow',
-  'ChangePercentRealtime',
-  'ChangeRealtime',
-  'Change_PercentChange',
-  'ChangeinPercent',
-  'Commission',
-  'Currency',
-  'DaysHigh',
-  'DaysLow',
-  'DaysRange',
-  'DaysRangeRealtime',
-  'DaysValueChange',
-  'DaysValueChangeRealtime',
-  'DividendPayDate',
-  'DividendShare',
-  'DividendYield',
-  'EBITDA',
-  'EPSEstimateCurrentYear',
-  'EPSEstimateNextQuarter',
-  'EPSEstimateNextYear',
-  'EarningsShare',
-  'ErrorIndicationreturnedforsymbolchangedinvalid',
-  'ExDividendDate',
-  'FiftydayMovingAverage',
-  'HighLimit',
-  'HoldingsGain',
-  'HoldingsGainPercent',
-  'HoldingsGainPercentRealtime',
-  'HoldingsGainRealtime',
-  'HoldingsValue',
-  'HoldingsValueRealtime',
-  'LastTradeDate',
-  'LastTradePriceOnly',
-  'LastTradeRealtimeWithTime',
-  'LastTradeTime',
-  'LastTradeWithTime',
-  'LowLimit',
-  'MarketCapRealtime',
-  'MarketCapitalization',
-  'MoreInfo',
-  'Name',
-  'Notes',
-  'OneyrTargetPrice',
-  'Open',
-  'OrderBookRealtime',
-  'PEGRatio',
-  'PERatio',
-  'PERatioRealtime',
-  'PercebtChangeFromYearHigh',
-  'PercentChange',
-  'PercentChangeFromFiftydayMovingAverage',
-  'PercentChangeFromTwoHundreddayMovingAverage',
-  'PercentChangeFromYearLow',
-  'PreviousClose',
-  'PriceBook',
-  'PriceEPSEstimateCurrentYear',
-  'PriceEPSEstimateNextYear',
-  'PricePaid',
-  'PriceSales',
-  'SharesOwned',
-  'ShortRatio',
-  'StockExchange',
-  'Symbol',
-  'TickerTrend',
-  'TradeDate',
-  'TwoHundreddayMovingAverage',
-  'Volume',
-  'YearHigh',
-  'YearLow',
-  'YearRange',
+  'id',
+  'name',
+  'symbol',
+  'rank',
+  'price_usd',
+  'price_btc',
+  '24h_volume_usd',
+  'market_cap_usd',
+  'available_supply',
+  'total_supply',
+  'max_supply',
+  'percent_change_1h',
+  'percent_change_24h',
+  'percent_change_7d',
+  'last_updated'
 ];
 
 exports.getNews = function getNews(symbol) {
-  const url = `https://feeds.finance.yahoo.com/rss/2.0/headline?s=${symbol}&region=US&lang=en-US`;
+  // const url = `https://feeds.finance.yahoo.com/rss/2.0/headline?s=${symbol}&region=US&lang=en-US`;
+  const url = `http://localhost:3000/ticker/`;
   console.log(url);
   return fetch(url)  // eslint-disable-line no-undef
     .then(response => response.text())
@@ -128,7 +62,7 @@ exports.getNews = function getNews(symbol) {
 };
 
 exports.symbolSuggest = function symbolSuggest(query) {
-  const url = `http://d.yimg.com/aq/autoc?query=${query}&region=US&lang=en-US&callback=YAHOO.util.ScriptNodeDataSource.callbacks`;
+  const url = `http://localhost:3000/ticker/`;
   console.log(url);
   return fetch(url).catch(err => console.error(err));  // eslint-disable-line no-undef
 };
