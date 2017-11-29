@@ -38,3 +38,24 @@ exports.moveObjectinArray = function(array, key, step) {
   array.splice(newPos, 0, value);
   return array;
 };
+
+exports.formatCurrency = function (number) {
+  if (number) {
+    return parseFloat(number).toLocaleString('en-EN', { style: 'currency', currency: 'USD' });
+  } else {
+    return '--';
+  }
+}
+
+exports.formatPercent = function (percentage) {
+  if (percentage) {
+    return parseFloat(percentage).toFixed(2) + '%';
+  } else {
+      return '--';
+  }
+}
+
+exports.formatDate = function (date = new Date()) {
+  const _date = new Date(parseInt(date, 10) * 1000);
+  return `${_date.toLocaleDateString()} - ${_date.getUTCHours()}:${_date.getUTCMinutes()}:${_date.getSeconds()}`;
+}

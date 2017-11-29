@@ -179,7 +179,7 @@ export default class Main extends React.Component {
           </TouchableHighlight>
           <View style={styles.footerMiddle}>
             <Text style={styles.marketTimeText}>
-              Market closed
+              Market open
             </Text>
           </View>
           <TouchableHighlight

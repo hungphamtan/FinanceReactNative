@@ -5,6 +5,8 @@ import {
   View,
 } from 'react-native';
 
+import { formatCurrency, formatPercent, formatDate } from '../../../utils/functions';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -73,29 +75,47 @@ export default class DetailsPage extends React.Component {
   }
 
   render() {
+    const {
+      watchlistResult,
+      stock: {
+        symbol
+      }
+     } = this.props;
+    const stockSelected = watchlistResult[symbol];
+    if (!watchlistResult || !stockSelected) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.nameText}>'--'</Text>
+        </View>  
+      )
+    } else 
     return (
       <View style={styles.container}>
         <View style={styles.nameBlock}>
           <Text style={styles.nameText}>
-            {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].Name) || '--'}
+            {`#${stockSelected.rank} :`} {stockSelected.name} {' - '}
+            {stockSelected.symbol}
           </Text>
         </View>
         <View style={styles.details}>
           <View style={styles.detailsRow}>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                OPEN
+                24H VOLUME USD
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].Open) || '--'}
+                {formatCurrency(stockSelected['24h_volume_usd'])}
               </Text>
             </View>
+          </View>
+          
+          <View style={styles.detailsRow}>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                MKT CAP
+                MARKET CAP USD
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].MarketCapitalization) || '--'}
+                {formatCurrency(stockSelected.market_cap_usd)}
               </Text>
             </View>
           </View>
@@ -104,18 +124,31 @@ export default class DetailsPage extends React.Component {
           <View style={styles.detailsRow}>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                HIGH
+                TOTAL SUPPLY
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].DaysHigh) || '--'}
+                {formatCurrency(stockSelected.total_supply)}
               </Text>
             </View>
+          </View>
+          <View style={styles.detailsRow}>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                52W HIGH
+                AVAILABLE SUPPLY
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].YearHigh) || '--'}
+                {formatCurrency(stockSelected.available_supply)}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.detailsRow}>
+            <View style={styles.detailsRowColumn}>
+              <Text style={styles.propertyText}>
+                MAX SUPPLY
+              </Text>
+              <Text style={styles.valueText}>
+                {formatCurrency(stockSelected.max_supply)}
               </Text>
             </View>
           </View>
@@ -124,61 +157,51 @@ export default class DetailsPage extends React.Component {
           <View style={styles.detailsRow}>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                LOW
+                Percent Change 1h
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].DaysLow) || '--'}
-              </Text>
-            </View>
-            <View style={styles.detailsRowColumn}>
-              <Text style={styles.propertyText}>
-                52W LOW
-              </Text>
-              <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].YearLow) || '--'}
+                {formatPercent(stockSelected.percent_change_1h)}
               </Text>
             </View>
           </View>
-          <View style={styles.separatorThin} />
 
           <View style={styles.detailsRow}>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                VOL
+                Change 24h
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].Volume) || '--'}
+                {formatPercent(stockSelected.percent_change_24h)}
               </Text>
             </View>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                AVG VOL
+                Change 7d
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].AverageDailyVolume) || '--'}
+                {formatPercent(stockSelected.percent_change_7d)}
               </Text>
             </View>
           </View>
           <View style={styles.separatorThin} />
+          <View style={styles.detailsRow}>
+            <View style={styles.detailsRowColumn}>
+              <Text style={styles.propertyText}>
+                LAST UPDATED
+              </Text>
+              <Text style={styles.valueText}>
+                {formatDate(stockSelected.last_updated)}
+              </Text>
+            </View>
+          </View>
 
           <View style={styles.detailsRow}>
             <View style={styles.detailsRowColumn}>
               <Text style={styles.propertyText}>
-                P/E
+                
               </Text>
               <Text style={styles.valueText}>
-                {(this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].PERatio) || '--'}
-              </Text>
-            </View>
-            <View style={styles.detailsRowColumn}>
-              <Text style={styles.propertyText}>
-                YIELD
-              </Text>
-              <Text style={styles.valueText}>
-                {(this.props.watchlistResult
-                  && this.props.watchlistResult[this.props.stock.symbol]
-                  && this.props.watchlistResult[this.props.stock.symbol].DividendYield
-                  && `${this.props.watchlistResult[this.props.stock.symbol].DividendYield} %`) || '--'}
+                {'--'}
               </Text>
             </View>
           </View>
