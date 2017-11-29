@@ -17,8 +17,9 @@ class StockStore {
         console.log('From store watchlist:', watchlist);
         if (!watchlist || !Array.isArray(watchlist)) {
           watchlist = [
-            { symbol: 'AAPL', share: 100 },
-            { symbol: 'GOOG', share: 100 },
+            { symbol: 'BTC', share: 100 },
+            { symbol: 'Ethereum', share: 100 },
+            { symbol: 'BCH', share: 100 }
           ];
           store.save('watchlist', watchlist);
         }
@@ -43,7 +44,7 @@ class StockStore {
       watchlist: [],
       watchlistResult: {},
       selectedStock: {},
-      selectedProperty: 'ChangeinPercent',
+      selectedProperty: 'percent_change_1h',
     };
   }
 
@@ -54,7 +55,8 @@ class StockStore {
     finance.getStock({ stock: symbols }, 'quotes')
       .then(response => response.json())
       .then((json) => {
-        let quotes = json.query.results.quote;
+        console.log('finance.getStock', json);
+        let quotes = json;
         quotes = Array.isArray(quotes) ? quotes : [quotes];
 
         const watchlistResult = {};

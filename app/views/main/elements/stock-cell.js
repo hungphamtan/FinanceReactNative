@@ -11,10 +11,14 @@ import StockActions from '../../../actions/stock-action';
 import StockStore from '../../../stores/stock-store';
 
 const ROTATE_PROPERTIES = {
-  Change: 'MarketCapitalization',
-  ChangeinPercent: 'Change',
-  MarketCapitalization: 'ChangeinPercent',
+  percent_change_1h: 'percent_change_1h',
+  percent_change_24h: 'percent_change_24h',
+  percent_change_7d: 'percent_change_7d',
+  MarketCapitalization: 'market_cap_usd',
 };
+
+const RED_COLOR = '#FC3D39';
+const GREEN_COLOR = '#53D769';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,13 +59,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   changeRed: {
-    backgroundColor: '#FC3D39',
+    backgroundColor: RED_COLOR,
     flex: 2,
     padding: 5,
     borderRadius: 3,
   },
   changeGreen: {
-    backgroundColor: '#53D769',
+    backgroundColor: GREEN_COLOR,
     flex: 2,
     padding: 5,
     borderRadius: 3,
@@ -101,42 +105,53 @@ export default class StockCell extends React.Component {
   }
 
   render() {
-    console.log(this.state.selectedStock.symbol, this.props.stock.symbol, this.state.selectedStock.symbol === this.props.stock.symbol);
+    const {
+      watchlistResult,
+      stock: {
+        symbol
+      }
+     } = this.props;
+
+    const {
+      selectedStock
+    } = this.state;
+    const stockCell = watchlistResult[symbol];
+    console.log(selectedStock.symbol, symbol, selectedStock.symbol === symbol);
     return (
       <TouchableHighlight
-        style={[this.state.selectedStock.symbol === this.props.stock.symbol ? styles.selected : null]}
+        style={[selectedStock.symbol === symbol ? styles.selected : null]}
         onPress={() => this.changeSelectedStock(this.props.stock)} underlayColor="#202020"
       >
-        <View style={[styles.container, this.state.selectedStock.symbol === this.props.stock.symbol ? styles.selected : null]}>
+        <View style={[styles.container, selectedStock.symbol === symbol ? styles.selected : null]}>
           <View style={styles.symbol}>
             <Text style={styles.symbolText}>
-              {this.props.stock.symbol}
+              {symbol}
             </Text>
           </View>
           <View style={styles.price}>
             <Text style={styles.priceText}>
-              {this.props.watchlistResult && this.props.watchlistResult[this.props.stock.symbol] && this.props.watchlistResult[this.props.stock.symbol].LastTradePriceOnly}
+              {watchlistResult && stockCell && stockCell.price_usd}
             </Text>
           </View>
           <TouchableHighlight
             style={(() => {
-              switch (this.props.watchlistResult
-                      && this.props.watchlistResult[this.props.stock.symbol]
-                      && this.props.watchlistResult[this.props.stock.symbol].Change
-                      && this.props.watchlistResult[this.props.stock.symbol].Change.startsWith('+')) {
-                case true: return styles.changeGreen;
-                case false: return styles.changeRed;
+              switch (watchlistResult
+              && stockCell
+              && stockCell.percent_change_1h
+              && stockCell.percent_change_1h.startsWith('-')) {
+                case true: return styles.changeRed;
+                case false: return styles.changeGreen;
                 default: return styles.changeGreen;
               }
             })()}
             underlayColor={(() => {
-              switch (this.props.watchlistResult
-                      && this.props.watchlistResult[this.props.stock.symbol]
-                      && this.props.watchlistResult[this.props.stock.symbol].Change
-                      && this.props.watchlistResult[this.props.stock.symbol].Change.startsWith('+')) {
-                case true: return '#53D769';
-                case false: return '#FC3D39';
-                default: return '#53D769';
+              switch (watchlistResult
+              && stockCell
+              && stockCell.percent_change_1h
+              && stockCell.percent_change_1h.startsWith('-')) {
+                case true: return RED_COLOR;
+                case false: return GREEN_COLOR;
+                default: return GREEN_COLOR;
               }
             })()}
             onPress={() => StockActions.selectProperty(ROTATE_PROPERTIES[this.state.selectedProperty])}
@@ -146,21 +161,25 @@ export default class StockCell extends React.Component {
                 {(() => {
                   switch (this.state.selectedProperty) {
                     case 'Change': return (
-                      this.props.watchlistResult
-                      && this.props.watchlistResult[this.props.stock.symbol]
-                      && this.props.watchlistResult[this.props.stock.symbol].Change) || '--';
-                    case 'ChangeinPercent': return (
-                      this.props.watchlistResult
-                      && this.props.watchlistResult[this.props.stock.symbol]
-                      && this.props.watchlistResult[this.props.stock.symbol].ChangeinPercent) || '--';
-                    case 'MarketCapitalization': return (
-                      this.props.watchlistResult
-                      && this.props.watchlistResult[this.props.stock.symbol]
-                      && this.props.watchlistResult[this.props.stock.symbol].MarketCapitalization) || '--';
+                      watchlistResult
+                      && stockCell
+                      && stockCell.percent_change_1h) || '--';
+                    case 'percent_change_24h': return (
+                      watchlistResult
+                      && stockCell
+                      && stockCell.percent_change_24h) || '--';
+                    case 'percent_change_7d': return (
+                      watchlistResult
+                      && stockCell
+                      && stockCell.percent_change_7d) || '--';
+                    case 'market_cap_usd': return (
+                      watchlistResult
+                      && stockCell
+                      && stockCell.market_cap_usd) || '--';
                     default: return (
-                      this.props.watchlistResult
-                      && this.props.watchlistResult[this.props.stock.symbol]
-                      && this.props.watchlistResult[this.props.stock.symbol].Change) || '--';
+                      watchlistResult
+                      && stockCell
+                      && stockCell.percent_change_1h) || '--';
                   }
                 })()}
               </Text>

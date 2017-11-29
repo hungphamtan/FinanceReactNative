@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log('StockStore.getState()');
+    console.log(StockStore.getState());
     this.state = Object.assign({
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       loaded: false,
@@ -156,10 +157,10 @@ export default class Main extends React.Component {
               <DetailsPage stock={this.state.selectedStock} watchlistResult={this.state.watchlistResult} />
             </View>
             <View>
-              <ChartPage stock={this.state.selectedStock} />
+              {/* <ChartPage stock={this.state.selectedStock} /> */}
             </View>
             <View>
-              <NewsPage key={this.state.key} stock={this.state.selectedStock} />
+              {/* <NewsPage key={this.state.key} stock={this.state.selectedStock} /> */}
             </View>
           </IndicatorViewPager>
         </View>
@@ -173,7 +174,7 @@ export default class Main extends React.Component {
             underlayColor="#202020"
           >
             <Text style={styles.yahooText}>
-              Yahoo!
+              CoinMarketCap
             </Text>
           </TouchableHighlight>
           <View style={styles.footerMiddle}>

@@ -30,7 +30,7 @@ exports.getStock = function getStock(opts, type) {
     .replace('{endDate}', opts.endDate);
 
   const url = 'http://localhost:3000/ticker/';
-  console.log(url);
+  console.log('url', url);
   return fetch(url);  // eslint-disable-line no-undef
 };
 
