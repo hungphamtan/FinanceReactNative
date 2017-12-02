@@ -4,11 +4,12 @@ import {
 	NODE_ENV
 } from 'react-native-dotenv';
 
-
+console.log('API_ENDPOINT', API_ENDPOINT);
 const configs = {
 	api: {
 		apiEndpoint: API_ENDPOINT,
-		protocol: PROTOCOL
+		protocol: PROTOCOL,
+		rootPath: `${PROTOCOL}://${API_ENDPOINT}`
 	},
 	env: NODE_ENV
 };

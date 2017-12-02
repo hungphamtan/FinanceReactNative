@@ -1,5 +1,6 @@
-import { API_ENDPOINT } from '../../config';
-
+import Configs from '../../config';
+console.log('config');
+console.log(Configs);
 exports.getStock = function getStock(opts, type) {
   const defs = {
     baseURL: 'https://query.yahooapis.com/v1/public/yql?q=',
@@ -31,8 +32,8 @@ exports.getStock = function getStock(opts, type) {
     .replace('{startDate}', opts.startDate)
     .replace('{endDate}', opts.endDate);
 
-  const url = `${API_ENDPOINT}/ticker/`;
-  console.log('url', url);
+  const url = `${Configs.api.rootPath}ticker/`;
+  console.log('url: ', url);
   return fetch(url);  // eslint-disable-line no-undef
 };
 
@@ -56,7 +57,7 @@ exports.properties = [
 
 exports.getNews = function getNews(symbol) {
   // const url = `https://feeds.finance.yahoo.com/rss/2.0/headline?s=${symbol}&region=US&lang=en-US`;
-  const url = `http://localhost:3000/ticker/`;
+  const url = `${Configs.api.rootPath}ticker/`;
   console.log(url);
   return fetch(url)  // eslint-disable-line no-undef
     .then(response => response.text())
@@ -64,7 +65,7 @@ exports.getNews = function getNews(symbol) {
 };
 
 exports.symbolSuggest = function symbolSuggest(query) {
-  const url = `http://localhost:3000/ticker/`;
+  const url = `${Configs.api.rootPath}ticker/`;
   console.log(url);
   return fetch(url).catch(err => console.error(err));  // eslint-disable-line no-undef
 };
