@@ -1,3 +1,5 @@
+import { API_ENDPOINT } from '../../config';
+
 exports.getStock = function getStock(opts, type) {
   const defs = {
     baseURL: 'https://query.yahooapis.com/v1/public/yql?q=',
@@ -29,7 +31,7 @@ exports.getStock = function getStock(opts, type) {
     .replace('{startDate}', opts.startDate)
     .replace('{endDate}', opts.endDate);
 
-  const url = 'http://localhost:3000/ticker/';
+  const url = `${API_ENDPOINT}/ticker/`;
   console.log('url', url);
   return fetch(url);  // eslint-disable-line no-undef
 };
