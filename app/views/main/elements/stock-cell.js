@@ -82,14 +82,15 @@ export default class StockCell extends React.Component {
     super(props);
 
     this.state = StockStore.getState();
+    this.onStockStoreChange = this.onStockStoreChange.bind(this);
   }
 
   componentDidMount() {
-    StockStore.listen(state => this.onStockStoreChange(state));
+    StockStore.listen(this.onStockStoreChange);
   }
 
   componentWillUnmount() {
-    StockStore.unlisten(state => this.onStockStoreChange(state));
+    StockStore.unlisten(this.onStockStoreChange);
   }
 
   onStockStoreChange(state) {
@@ -100,7 +101,6 @@ export default class StockCell extends React.Component {
   }
 
   changeSelectedStock(stock) {
-    console.log('Selected Stock:', stock);
     StockActions.selectStock(stock);
   }
 
@@ -116,7 +116,6 @@ export default class StockCell extends React.Component {
       selectedStock
     } = this.state;
     const stockCell = watchlistResult[symbol];
-    console.log(selectedStock.symbol, symbol, selectedStock.symbol === symbol);
     return (
       <TouchableHighlight
         style={[selectedStock.symbol === symbol ? styles.selected : null]}

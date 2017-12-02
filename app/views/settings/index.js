@@ -104,16 +104,18 @@ export default class Settings extends React.Component {
       dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2 }),
       key: Math.random(),
     }, StockStore.getState());
+
+    this.onStockStoreChange = this.onStockStoreChange.bind(this);
   }
 
   componentDidMount() {
-    StockStore.listen(state => this.onStockStoreChange(state));
+    StockStore.listen(this.onStockStoreChange);
 
     StockActions.updateStocks();
   }
 
   componentWillUnmount() {
-    StockStore.unlisten(state => this.onStockStoreChange(state));
+    StockStore.unlisten(this.onStockStoreChange);
   }
 
   onStockStoreChange(state) {

@@ -1,0 +1,11 @@
+{
+  "name": "localcoinmarketcap",
+  "version": "1.0.0",
+  "description": "``` json-server --watch data.json ```",
+  "main": "index.js",
+  "scripts": {
+    "start": "json-server --watch data.json"
+  },
+  "author": "",
+  "license": "ISC"
+}
