@@ -1,16 +1,17 @@
 {
-  "name": "Coin247",
+  "name": "finance",
   "version": "0.0.1",
   "description": "iOS's Stocks App clone written in React Native for demo purpose. Data is pulled from Yahoo Finance.",
   "main": "index.js",
   "scripts": {
-    "ios": "ENV_FILE=.env.dev react-native run-ios",
-    "android": "ENV_FILE=.env.dev react-native run-android",
-    "start": "ENV_FILE=.env.dev node node_modules/react-native/local-cli/cli.js start",
+    "ios": "ENV_FILE=.env.prod react-native run-ios",
+    "android": "ENV_FILE=.env.prod react-native run-android",
+    "start": "ENV_FILE=.env.prod node node_modules/react-native/local-cli/cli.js start",
     "build-android": "npm run release-android; osascript -e 'display notification \"DONE!\" with title \"Android built\"'",
     "bundle-android": "$NVM_BIN/react-native bundle --platform android --dev false --entry-file ./index.android.js --bundle-output android/app/src/main/assets/index.android.bundle # --assets-dest android/app/src/main/res/",
     "release-android": "cd android && ./gradlew assembleRelease && cd ..",
     "release-ios": "ENV_FILE=.env.prod react-native run-ios --configuration Release",
+    "release-ios-hp": "ENV_FILE=.env.prod react-native run-ios --configuration Release --device \"HP's Phone\"",
     "mock": "json-server --watch mock/data.json"
   },
   "repository": {

@@ -4,14 +4,17 @@ import {
 	NODE_ENV
 } from 'react-native-dotenv';
 
-console.log('API_ENDPOINT', API_ENDPOINT);
+const apiEndpoint = API_ENDPOINT || 'api.coinmarketcap.com/v1/';
+const protocol = PROTOCOL || 'https';
+const env = NODE_ENV || 'prod';
+
 const configs = {
 	api: {
-		apiEndpoint: API_ENDPOINT,
-		protocol: PROTOCOL,
-		rootPath: `${PROTOCOL}://${API_ENDPOINT}`
+		apiEndpoint,
+		protocol,
+		rootPath: `${protocol}://${apiEndpoint}`
 	},
-	env: NODE_ENV
+	env
 };
 
 // a workaround to allow undefined environment variables
