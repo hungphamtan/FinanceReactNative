@@ -1,19 +1,70 @@
 import Configs from '../../config';
 console.log('config');
 console.log(Configs);
-exports.getStock = function getStock(opts, type) {
-  const defs = {
-    baseURL: 'https://query.yahooapis.com/v1/public/yql?q=',
-    query: {
-      quotes: 'select * from yahoo.finance.quotes where symbol in ("{stock}")',
-      historicaldata: 'select * from yahoo.finance.historicaldata where symbol = "{stock}" and startDate = "{startDate}" and endDate = "{endDate}"',
-    },
-    suffixURL: {
-      quotes: '&format=json&diagnostics=true&env=store://datatables.org/alltableswithkeys',
-      historicaldata: '&format=json&diagnostics=true&env=store://datatables.org/alltableswithkeys',
-    },
-  };
 
+
+
+
+const URL = "https://api-public.sandbox.gdax.com/",
+  SOCKET_URL = "wss://ws-feed.gdax.com"
+
+
+const initData = () => {
+  console.log('initData');
+  fetch(`${URL}products`)
+    .then(res => res.json())
+    .then(json => {
+      console.log('gdax data');
+      console.log(json);
+      connectSocket();
+      return json;
+    })
+    .catch(e => console.error(e.message));
+}
+
+const connectSocket = () => {
+  const ws = new WebSocket(SOCKET_URL);
+
+  ws.onopen = () => {
+    console.log('WebSocket: onopen');
+    // const state = getState(),
+    //   product_ids = Object.keys(state.prices)
+    //     .map(k => state.prices[k].id);
+    const product_ids = ['BTC-USD', 'ETH-EUR'];
+
+    ws.send(JSON.stringify({
+      type: 'subscribe',
+      product_ids
+    }));
+  }
+
+  ws.onmessage = (msg) => {
+    console.log('WebSocket: onmessage');
+    
+    const { type, price, product_id, reason, size } = JSON.parse(msg.data);
+    const value = {
+      time: new Date(),
+      price: Number(price)
+    }
+    console.log(`${product_id}: ${price}: ${size} : ${type}`);
+    if (type === 'match' && price) {
+      // add value
+      console.log('product_id: ', product_id);
+      console.log('value: ', value);
+    }
+  }
+
+  ws.onerror = (e) => {
+    console.log(e.message);
+  }
+
+  ws.onclose = (e) => {
+    console.log(e.code, e.reason);
+  }
+}
+
+exports.getStock = function getStock(opts, type) {
+  initData();
   opts = opts || {};
 
   if (!opts.stock) {
@@ -26,11 +77,6 @@ exports.getStock = function getStock(opts, type) {
   }
 
   console.log(opts.stock);
-
-  const query = defs.query[type]
-    .replace('{stock}', opts.stock)
-    .replace('{startDate}', opts.startDate)
-    .replace('{endDate}', opts.endDate);
 
   const url = `${Configs.api.rootPath}ticker/`;
   console.log('url: ', url);

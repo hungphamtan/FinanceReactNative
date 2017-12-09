@@ -1,12 +1,16 @@
-import {
-	API_ENDPOINT,
-	PROTOCOL,
-	NODE_ENV
-} from 'react-native-dotenv';
+// import {
+// 	API_ENDPOINT,
+// 	PROTOCOL,
+// 	NODE_ENV
+// } from 'react-native-dotenv';
 
-const apiEndpoint = API_ENDPOINT || 'api.coinmarketcap.com/v1/';
-const protocol = PROTOCOL || 'https';
-const env = NODE_ENV || 'prod';
+// const apiEndpoint = 'api.coinmarketcap.com/v1/';
+// const protocol = 'https';
+// const env = 'prod';
+
+const apiEndpoint = 'localhost:3000/';
+const protocol = 'http';
+const env = 'dev';
 
 const configs = {
 	api: {
